@@ -29,6 +29,22 @@ public class InsuranceQuoteTest
     {
         driver.Quit();
     }
+
+    private void AssertErrorMessage(string elementId, string expectedMessage)
+    {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+        wait.Until(d => d.FindElement(By.Id(elementId)).Displayed);
+        Assert.That(driver.FindElement(By.Id(elementId)).Text, Is.EqualTo(expectedMessage));
+    }
+
+
+    private void ClickWhenVisible(string elementId)
+    {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        var element = wait.Until(d => d.FindElement(By.Id(elementId)));
+        element.Click();
+    }
+
     [Test]
     public void insuranceQuote01_Age24_DrivingExp3_Accidents0()
     {
@@ -145,7 +161,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("phone-error")).Text, Is.EqualTo("Phone Number must follow the patterns 111-111-1111 or (111)111-1111"));
+        AssertErrorMessage("phone-error", "Phone Number must follow the patterns 111-111-1111 or (111)111-1111");
     }
     [Test]
     public void insuranceQuote05_InvalidEmail_Age28_Driving_Exp3_Accidents0()
@@ -185,7 +201,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("email-error")).Text, Is.EqualTo("Must be a valid email address"));
+        AssertErrorMessage("email-error", "Must be a valid email address");
     }
     [Test]
     public void insuranceQuote06_InvalidPostalCode_Age35_DrivingExp15_Accidents1()
@@ -227,7 +243,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("postalCode-error")).Text, Is.EqualTo("Postal Code must follow the pattern A1A 1A1"));
+        AssertErrorMessage("postalCode-error", "Postal Code must follow the pattern A1A 1A1");
     }
     [Test]
     public void insuranceQuote07_AgeOmitted_DrivingExp5_Accidents0()
@@ -265,7 +281,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("age-error")).Text, Is.EqualTo("Age (>=16) is required"));
+        AssertErrorMessage("age-error", "Age (>=16) is required");
     }
     [Test]
     public void insuranceQuote08_Age27_DrivingExp8_AccidentsOmitted()
@@ -303,7 +319,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("accidents-error")).Text, Is.EqualTo("Number of accidents is required"));
+        AssertErrorMessage("accidents-error", "Number of accidents is required");
     }
     [Test]
     public void insuranceQuote09_Age45_DrivingExpOmitted_Accidents0()
@@ -332,7 +348,7 @@ public class InsuranceQuoteTest
         driver.FindElement(By.Id("accidents")).SendKeys("0");
         driver.FindElement(By.Id("btnSubmit")).Click();
         js.ExecuteScript("window.scrollTo(0,635.8333129882812)");
-        Assert.That(driver.FindElement(By.Id("experience-error")).Text, Is.EqualTo("Years of experience is required"));
+        AssertErrorMessage("experience-error", "Years of experience is required");
     }
     [Test]
     public void insuranceQuote10_OmittedCity_Age32_DrivingExp5_Accidents1()
@@ -365,7 +381,7 @@ public class InsuranceQuoteTest
         driver.FindElement(By.Id("accidents")).SendKeys("1");
         driver.FindElement(By.Id("btnSubmit")).Click();
         {
-      
+
             var element = driver.FindElement(By.Id("btnSubmit"));
             Actions builder = new Actions(driver);
             builder.MoveToElement(element).Perform();
@@ -375,7 +391,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("city-error")).Text, Is.EqualTo("City is required"));
+        AssertErrorMessage("city-error", "City is required");
     }
     [Test]
     public void insuranceQuote11_OmittedLastName_Age22_DrivingExp1_Accidents0()
@@ -422,7 +438,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("lastName-error")).Text, Is.EqualTo("Last Name is required"));
+        AssertErrorMessage("lastName-error", "Last Name is required");
     }
     [Test]
     public void insuranceQuote12_OmittedFisrtName_Age19_DrivingExp2_Accidents1()
@@ -484,7 +500,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("firstName-error")).Text, Is.EqualTo("First Name is required"));
+        AssertErrorMessage("firstName-error", "First Name is required");
     }
     [Test]
     public void insuranceQuote13_OmittedAddress_Age37_DrivingExp7_Accidents0()
@@ -534,7 +550,7 @@ public class InsuranceQuoteTest
             Actions builder = new Actions(driver);
             builder.MoveToElement(element, 0, 0).Perform();
         }
-        Assert.That(driver.FindElement(By.Id("address-error")).Text, Is.EqualTo("Address is required"));
+        AssertErrorMessage("address-error", "Address is required");
     }
     [Test]
     public void insuranceQuote_14Age_35DrivingExp10_Accidents2()
