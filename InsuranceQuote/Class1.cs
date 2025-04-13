@@ -37,14 +37,6 @@ public class InsuranceQuoteTest
         Assert.That(driver.FindElement(By.Id(elementId)).Text, Is.EqualTo(expectedMessage));
     }
 
-
-    private void ClickWhenVisible(string elementId)
-    {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        var element = wait.Until(d => d.FindElement(By.Id(elementId)));
-        element.Click();
-    }
-
     [Test]
     public void insuranceQuote01_Age24_DrivingExp3_Accidents0()
     {
